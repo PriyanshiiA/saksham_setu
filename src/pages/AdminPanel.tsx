@@ -37,32 +37,32 @@ const AdminPanel = () => {
     monthlyGrowth: 15.8
   };
 
-  const pendingVerifications = [
-    {
-      id: 1,
-      name: "Rajesh Kumar",
-      type: "Employee",
-      submitted: "2024-01-15",
-      documents: "Disability Certificate",
-      status: "pending"
-    },
-    {
-      id: 2,
-      name: "TechCorp Solutions",
-      type: "Employer",
-      submitted: "2024-01-14",
-      documents: "Company Registration",
-      status: "pending"
-    },
-    {
-      id: 3,
-      name: "Priya Sharma",
-      type: "Employee",
-      submitted: "2024-01-13",
-      documents: "Medical Certificate",
-      status: "under_review"
-    }
-  ];
+  // const pendingVerifications = [
+  //   {
+  //     id: 1,
+  //     name: "Rajesh Kumar",
+  //     type: "Employee",
+  //     submitted: "2024-01-15",
+  //     documents: "Disability Certificate",
+  //     status: "pending"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "TechCorp Solutions",
+  //     type: "Employer",
+  //     submitted: "2024-01-14",
+  //     documents: "Company Registration",
+  //     status: "pending"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Priya Sharma",
+  //     type: "Employee",
+  //     submitted: "2024-01-13",
+  //     documents: "Medical Certificate",
+  //     status: "under_review"
+  //   }
+  // ];
 
   const recentActivity = [
     { id: 1, action: "New user registration", user: "Amit Patel", time: "2 hours ago", type: "user" },
@@ -196,7 +196,7 @@ const AdminPanel = () => {
             {/* Verifications Tab */}
             <TabsContent value="verifications">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
+               {/* <div className="lg:col-span-2">
                   <Card className="shadow-lg border-0">
                     <CardHeader>
                       <div className="flex justify-between items-center">
@@ -243,7 +243,7 @@ const AdminPanel = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                </div>*/}
 
                 <div>
                   <Card className="shadow-lg border-0">
