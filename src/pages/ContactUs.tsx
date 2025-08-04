@@ -61,8 +61,8 @@ const ContactUs = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">Email</h4>
-                      <p className="text-gray-600">support@saksham-setu.gov.in</p>
-                      <p className="text-gray-600">info@saksham-setu.gov.in</p>
+                      <p className="text-gray-600">support@saksham-setu.com</p>
+                      <p className="text-gray-600">info@saksham-setu.com</p>
                     </div>
                   </div>
 
@@ -84,9 +84,9 @@ const ContactUs = () => {
                     <div>
                       <h4 className="font-semibold text-gray-900">Address</h4>
                       <p className="text-gray-600">
-                        Ministry of Social Justice & Empowerment<br />
-                        Government of India<br />
-                        New Delhi - 110001
+                       Charotar University of Science and Technology<br />
+                        Charusat<br />
+                       Anand-388421
                       </p>
                     </div>
                   </div>
