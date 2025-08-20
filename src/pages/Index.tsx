@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
@@ -6,6 +7,17 @@ import Footer from "@/components/Footer";
 import { Users, Building, Search, Shield, Heart, Target, Award, CheckCircle } from "lucide-react";
 
 const Index = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      navigate(`/find-jobs?query=${encodeURIComponent(searchTerm)}`);
+    } else {
+      navigate("/find-jobs");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       <Header />
@@ -41,7 +53,7 @@ const Index = () => {
             </Link>
           </div>
 
-          {/* Search Bar Preview */}
+          {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-full shadow-lg p-4 flex items-center">
               <Search className="h-5 w-5 text-gray-400 ml-4" />
@@ -49,19 +61,25 @@ const Index = () => {
                 type="text"
                 placeholder="Search jobs by title, skills, or location..."
                 className="flex-1 px-4 py-2 text-gray-700 bg-transparent focus:outline-none"
-                readOnly
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch();
+                }}
               />
-              <Link to="/find-jobs">
-                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                  Find Jobs
-                </Button>
-              </Link>
+              <Button
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                onClick={handleSearch}
+              >
+                Find Jobs
+              </Button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
+      {/* -- unchanged -- */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -130,6 +148,7 @@ const Index = () => {
       </section>
 
       {/* Statistics Section */}
+      {/* -- unchanged -- */}
       <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -159,6 +178,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
+      {/* -- unchanged -- */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">Ready to Start Your Journey?</h2>
@@ -187,3 +207,4 @@ const Index = () => {
 };
 
 export default Index;
+
