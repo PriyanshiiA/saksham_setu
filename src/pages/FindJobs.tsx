@@ -1,181 +1,322 @@
-import { useState, useEffect } from "react"; 
-import { useLocation } from "react-router-dom"; 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MapPin, Clock, DollarSign, Building, Heart, Bookmark } from "lucide-react";
+import { Search, MapPin, Clock, DollarSign, Building, Users, Filter, Heart, Bookmark } from "lucide-react";
 
 const FindJobs = () => {
-  const location = useLocation(); 
-  const params = new URLSearchParams(location.search); 
+  const [filters, setFilters] = useState({
+    keyword: "",
+    ability: "",
+    jobType: "",
+    workType: "",
+    location: "",
+    salaryRange: ""
+  });
 
-  const [jobs, setJobs] = useState([
-    { id: 1, title: "Frontend Developer", company: "TechCorp Solutions", location: "Mumbai, Maharashtra", type: "Full-time", workType: "Remote", salary: "₹4,00,000 - ₹7,00,000", posted: "2 days ago", favorite: false, saved: false },
-    { id: 2, title: "Customer Support Specialist", company: "ServiceFirst Inc", location: "Bangalore, Karnataka", type: "Full-time", workType: "Hybrid", salary: "₹2,50,000 - ₹4,00,000", posted: "3 days ago", favorite: true, saved: false },
-    { id: 3, title: "Backend Engineer", company: "CodeWorks Ltd", location: "Delhi, India", type: "Part-time", workType: "On-site", salary: "₹5,00,000 - ₹9,00,000", posted: "1 week ago", favorite: false, saved: true },
-    { id: 4, title: "UI/UX Designer", company: "PixelPerfect Studios", location: "Pune, Maharashtra", type: "Full-time", workType: "Remote", salary: "₹3,50,000 - ₹6,50,000", posted: "5 days ago", favorite: false, saved: false }
-  ]);
-
-  const [viewMode, setViewMode] = useState("all"); 
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [applyingJob, setApplyingJob] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    const queryFromURL = params.get("query") || "";
-    if (queryFromURL) {
-      setSearchTerm(queryFromURL);
+  // Mock job data
+  const jobs = [
+    {
+      id: 1,
+      title: "Frontend Developer",
+      company: "TechCorp Solutions",
+      location: "Mumbai, Maharashtra",
+      type: "Full-time",
+      workType: "Remote",
+      salary: "₹4,00,000 - ₹7,00,000",
+      abilities: ["Visual Impairment", "Mobility Impairment"],
+      skills: ["React", "JavaScript", "CSS"],
+      posted: "2 days ago",
+      saved: false
+    },
+    {
+      id: 2,
+      title: "Customer Support Specialist",
+      company: "ServiceFirst Inc",
+      location: "Bangalore, Karnataka",
+      type: "Full-time",
+      workType: "Hybrid",
+      salary: "₹2,50,000 - ₹4,00,000",
+      abilities: ["Hearing Impairment", "Mobility Impairment"],
+      skills: ["Communication", "Problem Solving", "CRM"],
+      posted: "3 days ago",
+      saved: true
+    },
+    {
+      id: 3,
+      title: "Data Entry Operator",
+      company: "DataTech Services",
+      location: "Delhi, NCR",
+      type: "Part-time",
+      workType: "On-site",
+      salary: "₹1,80,000 - ₹2,50,000",
+      abilities: ["Visual Impairment", "Cognitive Impairment"],
+      skills: ["Typing", "MS Office", "Attention to Detail"],
+      posted: "1 week ago",
+      saved: false
+    },
+    {
+      id: 4,
+      title: "Content Writer",
+      company: "Creative Media Hub",
+      location: "Pune, Maharashtra",
+      type: "Full-time",
+      workType: "Remote",
+      salary: "₹3,00,000 - ₹5,00,000",
+      abilities: ["Mobility Impairment", "Multiple Disabilities"],
+      skills: ["Writing", "SEO", "Content Strategy"],
+      posted: "4 days ago",
+      saved: false
     }
-  }, [location.search]); 
-
-  const toggleFavorite = (id) => {
-    setJobs((prev) => prev.map((job) => job.id === id ? { ...job, favorite: !job.favorite } : job));
-  };
-
-  const toggleSaved = (id) => {
-    setJobs((prev) => prev.map((job) => job.id === id ? { ...job, saved: !job.saved } : job));
-  };
-
-  const handleApplyClick = (job) => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    if (!isLoggedIn) {
-      window.location.href = "/login";
-      return;
-    }
-    setApplyingJob(job);
-  };
+  ];
 
   const handleSearch = () => {
-    console.log("Searching with:", searchTerm);
+    console.log("Searching with filters:", filters);
   };
-
-  const filteredJobs = jobs.filter((job) => {
-    const matchesSearch =
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchTerm.toLowerCase());
-
-    if (viewMode === "favorites") return job.favorite && matchesSearch;
-    if (viewMode === "saved") return job.saved && matchesSearch;
-    return matchesSearch;
-  });
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+      
+      <div className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Find Your Dream Job</h1>
+            <p className="text-lg text-gray-600">Discover opportunities tailored for your abilities</p>
+          </div>
 
-      {/* 🔹 Search Bar */}
-      <div className="max-w-7xl mx-auto px-4 py-4 flex gap-3">
-        <input
-          type="text"
-          placeholder="Search jobs by title, company, or location..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border rounded-md px-4 py-2 w-full"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-        />
-        <Button
-          onClick={handleSearch}
-          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-        >
-          Search Jobs
-        </Button>
-      </div>
-
-      {/* View Mode Buttons */}
-      <div className="max-w-7xl mx-auto px-4 py-4 flex gap-3">
-        <Button variant={viewMode === "all" ? "default" : "outline"} onClick={() => setViewMode("all")}>All Jobs</Button>
-        <Button variant={viewMode === "favorites" ? "default" : "outline"} onClick={() => setViewMode("favorites")}>Favorite Jobs</Button>
-        <Button variant={viewMode === "saved" ? "default" : "outline"} onClick={() => setViewMode("saved")}>Saved Jobs</Button>
-      </div>
-
-      {/* 🔹 Job Details View */}
-      {selectedJob ? (
-        <div className="max-w-4xl mx-auto py-8 px-4">
-          <Card className="shadow-lg border-l-4 border-l-blue-500">
+          {/* Search and Filters */}
+          <Card className="mb-8 shadow-lg border-0">
+            <CardHeader className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+              <CardTitle className="flex items-center space-x-2">
+                <Search className="h-5 w-5" />
+                <span>Job Search & Filters</span>
+              </CardTitle>
+            </CardHeader>
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold mb-2">{selectedJob.title}</h2>
-              <div className="flex items-center space-x-2 text-gray-600 mb-3">
-                <Building className="h-5 w-5" />
-                <span>{selectedJob.company}</span>
-              </div>
-              <p className="text-gray-700 mb-3">
-                <MapPin className="inline h-4 w-4 mr-1" /> {selectedJob.location}
-              </p>
-              <p className="text-gray-700 mb-3">
-                <Clock className="inline h-4 w-4 mr-1" /> {selectedJob.type} • {selectedJob.workType}
-              </p>
-              <p className="text-gray-700 mb-3">
-                <DollarSign className="inline h-4 w-4 mr-1" /> {selectedJob.salary}
-              </p>
-              <p className="text-sm text-gray-500">Posted {selectedJob.posted}</p>
+              <div className="space-y-6">
+                {/* Main Search */}
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <Input
+                      placeholder="Search by job title, skills, or company..."
+                      value={filters.keyword}
+                      onChange={(e) => setFilters({...filters, keyword: e.target.value})}
+                      className="h-12 text-lg"
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleSearch}
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 h-12 px-8"
+                  >
+                    <Search className="h-4 w-4 mr-2" />
+                    Search Jobs
+                  </Button>
+                </div>
 
-              <div className="mt-6 flex gap-3">
-                <Button variant="outline" onClick={() => setSelectedJob(null)}>Back to Jobs</Button>
-                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white" onClick={() => handleApplyClick(selectedJob)}>Apply Now</Button>
+                {/* Advanced Filters */}
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <div className="space-y-2">
+                    <Label>Ability Category</Label>
+                    <Select onValueChange={(value) => setFilters({...filters, ability: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="All Abilities" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Abilities</SelectItem>
+                        <SelectItem value="visual">Low Vision / Blind</SelectItem>
+                        <SelectItem value="hearing">Hard of Hearing / Deaf</SelectItem>
+                        <SelectItem value="mobility">Hand or Leg Disability / Physical Disability</SelectItem>
+                        <SelectItem value="cognitive">Learning or Memory Difficulty</SelectItem>
+                        <SelectItem value="multiple">Multiple Disabilities</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Job Type</Label>
+                    <Select onValueChange={(value) => setFilters({...filters, jobType: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="All Types" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Types</SelectItem>
+                        <SelectItem value="full-time">Full-time</SelectItem>
+                        <SelectItem value="part-time">Part-time</SelectItem>
+                        <SelectItem value="contract">Contract</SelectItem>
+                        <SelectItem value="internship">Internship</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Work Type</Label>
+                    <Select onValueChange={(value) => setFilters({...filters, workType: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="All Work Types" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Work Types</SelectItem>
+                        <SelectItem value="remote">Remote</SelectItem>
+                        <SelectItem value="onsite">On-site</SelectItem>
+                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Location</Label>
+                    <Input
+                      placeholder="City, State"
+                      value={filters.location}
+                      onChange={(e) => setFilters({...filters, location: e.target.value})}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Salary Range</Label>
+                    <Select onValueChange={(value) => setFilters({...filters, salaryRange: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Any Salary" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Any Salary</SelectItem>
+                        <SelectItem value="0-10k">₹0 - ₹10,000</SelectItem>
+                        <SelectItem value="10k-50k">₹10,000 - ₹50,000</SelectItem>
+                        <SelectItem value="50k-2">₹50,000 - ₹2 Lakhs</SelectItem>
+                        <SelectItem value="2-4">₹2 - ₹4 Lakhs</SelectItem>
+                        <SelectItem value="4-6">₹4 - ₹6 Lakhs</SelectItem>
+                        <SelectItem value="6-10">₹6 - ₹10 Lakhs</SelectItem>
+                        <SelectItem value="10+">₹10+ Lakhs</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
-        </div>
-      ) : (
-        /* 🔹 Job List */
-        <div className="max-w-7xl mx-auto py-8 px-4 space-y-6">
-          {filteredJobs.length === 0 && (
-            <p className="text-center text-gray-500">No jobs found</p>
-          )}
-          {filteredJobs.map((job) => (
-            <Card key={job.id} className="shadow-md border-l-4 border-l-purple-500">
-              <CardContent className="p-6">
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="text-xl font-semibold">{job.title}</h3>
-                    <div className="flex items-center space-x-2 text-gray-600 mb-2">
-                      <Building className="h-4 w-4" />
-                      <span>{job.company}</span>
+
+          {/* Results Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-900">Available Jobs</h2>
+              <p className="text-gray-600">{jobs.length} jobs found</p>
+            </div>
+            <Select defaultValue="recent">
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recent">Most Recent</SelectItem>
+                <SelectItem value="salary-high">Salary: High to Low</SelectItem>
+                <SelectItem value="salary-low">Salary: Low to High</SelectItem>
+                <SelectItem value="relevance">Most Relevant</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Job Cards */}
+          <div className="space-y-6">
+            {jobs.map((job) => (
+              <Card key={job.id} className="shadow-md hover:shadow-lg transition-shadow border-l-4 border-l-purple-500">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h3>
+                      <div className="flex items-center space-x-2 text-gray-600 mb-2">
+                        <Building className="h-4 w-4" />
+                        <span>{job.company}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+                        <div className="flex items-center space-x-1">
+                          <MapPin className="h-4 w-4" />
+                          <span>{job.location}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{job.type} • {job.workType}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <DollarSign className="h-4 w-4" />
+                          <span>{job.salary}</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex gap-4 text-sm text-gray-600">
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>{job.location}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{job.type} • {job.workType}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <DollarSign className="h-4 w-4" />
-                        <span>{job.salary}</span>
-                      </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant={job.saved ? "default" : "outline"}
+                        size="sm"
+                        className={job.saved ? "bg-red-500 hover:bg-red-600" : ""}
+                      >
+                        <Heart className={`h-4 w-4 ${job.saved ? "fill-current" : ""}`} />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Bookmark className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
 
-                  {/* Action Icons */}
-                  <div className="flex space-x-2">
-                    <button onClick={() => toggleFavorite(job.id)} className="w-10 h-10 flex items-center justify-center border rounded-md bg-white">
-                      <Heart className="h-5 w-5" color={job.favorite ? "red" : "black"} fill={job.favorite ? "red" : "white"} />
-                    </button>
-                    <button onClick={() => toggleSaved(job.id)} className="w-10 h-10 flex items-center justify-center border rounded-md bg-white">
-                      <Bookmark className="h-5 w-5" color="black" fill={job.saved ? "black" : "white"} />
-                    </button>
+                  <div className="mb-4">
+                    <div className="mb-2">
+                      <span className="text-sm font-medium text-gray-700">Suitable for:</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {job.abilities.map((ability, index) => (
+                        <span
+                          key={index}
+                          className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium"
+                        >
+                          {ability}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Footer */}
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-sm text-gray-500">Posted {job.posted}</span>
-                  <div className="space-x-3">
-                    <Button variant="outline" onClick={() => setSelectedJob(job)}>View Details</Button>
-                    <Button className="bg-gradient-to-r from-purple-600 to-blue-600 text-white" onClick={() => handleApplyClick(job)}>Apply Now</Button>
+                  <div className="mb-4">
+                    <div className="mb-2">
+                      <span className="text-sm font-medium text-gray-700">Required Skills:</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {job.skills.map((skill, index) => (
+                        <span
+                          key={index}
+                          className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-500">Posted {job.posted}</span>
+                    <div className="space-x-3">
+                      <Button variant="outline">
+                        View Details
+                      </Button>
+                      <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+                        Apply Now
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Load More */}
+          <div className="text-center mt-8">
+            <Button variant="outline" className="px-8 py-3">
+              Load More Jobs
+            </Button>
+          </div>
         </div>
-      )}
+      </div>
 
       <Footer />
     </div>
