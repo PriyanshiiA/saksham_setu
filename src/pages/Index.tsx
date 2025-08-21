@@ -158,19 +158,19 @@ const Index = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2">10,000+</div>
+              <div className="text-4xl font-bold mb-2">5000+</div>
               <div className="text-purple-200">Job Seekers Registered</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
+              <div className="text-4xl font-bold mb-2">300+</div>
               <div className="text-purple-200">Verified Employers</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">5,000+</div>
+              <div className="text-4xl font-bold mb-2">3000+</div>
               <div className="text-purple-200">Jobs Posted</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">80%</div>
+              <div className="text-4xl font-bold mb-2">70%</div>
               <div className="text-purple-200">Successful Placements</div>
             </div>
           </div>
