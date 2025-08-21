@@ -236,19 +236,19 @@ const AboutUs = () => {
             <h2 className="text-3xl font-bold text-center mb-8">Our Impact</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div>
-                <div className="text-4xl font-bold mb-2">10,000+</div>
+                <div className="text-4xl font-bold mb-2">5000+</div>
                 <div className="text-purple-200">Lives Empowered</div>
               </div>
               <div>
-                <div className="text-4xl font-bold mb-2">500+</div>
+                <div className="text-4xl font-bold mb-2">300+</div>
                 <div className="text-purple-200">Partner Companies</div>
               </div>
               <div>
-                <div className="text-4xl font-bold mb-2">5,000+</div>
+                <div className="text-4xl font-bold mb-2">3000+</div>
                 <div className="text-purple-200">Successful Placements</div>
               </div>
               <div>
-                <div className="text-4xl font-bold mb-2">50+</div>
+                <div className="text-4xl font-bold mb-2">70+</div>
                 <div className="text-purple-200">Cities Covered</div>
               </div>
             </div>
