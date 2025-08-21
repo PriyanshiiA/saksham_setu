@@ -107,12 +107,12 @@ const EmployeeSignup = () => {
                         <SelectValue placeholder="Select your ability category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="visual">Visual Impairment</SelectItem>
-                        <SelectItem value="hearing">Hearing Impairment</SelectItem>
-                        <SelectItem value="mobility">Mobility Impairment</SelectItem>
-                        <SelectItem value="cognitive">Cognitive Impairment</SelectItem>
+                        <SelectItem value="all">All Abilities</SelectItem>
+                        <SelectItem value="visual">Low Vision / Blind</SelectItem>
+                        <SelectItem value="hearing">Hard of Hearing / Deaf</SelectItem>
+                        <SelectItem value="mobility">Hand or Leg Disability / Physical Disability</SelectItem>
+                        <SelectItem value="cognitive">Learning or Memory Difficulty</SelectItem>
                         <SelectItem value="multiple">Multiple Disabilities</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
